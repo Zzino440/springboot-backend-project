@@ -3,14 +3,13 @@ package com.example.springbootbackend.controller;
 import com.example.springbootbackend.model.Employee;
 import com.example.springbootbackend.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/")
+@CrossOrigin("*")
 public class EmployeeController {
 
     @Autowired
@@ -18,7 +17,14 @@ public class EmployeeController {
 
     //get all employees
     @GetMapping("/employees")
-    public List<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
+    }
+
+
+    //create employee
+    @PostMapping("/employees")
+    public Employee createEmployee(@RequestBody Employee employee) {
+        return employeeRepository.save(employee);
     }
 }
