@@ -3,6 +3,9 @@ package com.example.springbootbackend.controller;
 import com.example.springbootbackend.exception.ResourceNotFoundException;
 import com.example.springbootbackend.model.Employee;
 import com.example.springbootbackend.repository.EmployeeRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +13,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequestMapping("api/v1/")
 public class EmployeeController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     //get all employees
     @GetMapping("/employees")
@@ -22,10 +29,15 @@ public class EmployeeController {
         return employeeRepository.findAll();
     }
 
-
     //create employee
     @PostMapping("/employees")
     public Employee createEmployee(@RequestBody Employee employee) {
+        try {
+            String employeeJson = objectMapper.writeValueAsString(employee);
+            log.info("Employee created: {}", employeeJson);
+        } catch (JsonProcessingException e) {
+            log.error("Error during Employee JSON conversion");
+        }
         return employeeRepository.save(employee);
     }
 
