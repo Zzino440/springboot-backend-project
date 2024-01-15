@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class Employee {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,11 +19,11 @@ public class Employee {
     @Column(name = "email_id")
     private String emailID;
 
-    public Employee() {
+    public User() {
 
     }
 
-    public Employee(String firstName, String lastName, String emailID) {
+    public User(String firstName, String lastName, String emailID) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
