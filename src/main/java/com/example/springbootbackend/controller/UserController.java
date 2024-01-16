@@ -5,7 +5,7 @@ import com.example.springbootbackend.DTO.UserDTO;
 import com.example.springbootbackend.exception.ResourceNotFoundException;
 import com.example.springbootbackend.model.User;
 import com.example.springbootbackend.repository.UserRepository;
-import com.example.springbootbackend.services.UserService;
+import com.example.springbootbackend.service.UserService;
 import com.example.springbootbackend.utility.LoginMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
