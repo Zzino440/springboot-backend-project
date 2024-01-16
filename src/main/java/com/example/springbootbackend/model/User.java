@@ -19,16 +19,18 @@ public class User {
     private String lastName;
     @Column(name = "email_id")
     private String emailID;
+    @Column(name = "password")
+    private String password;
 
     public User() {
 
     }
 
-    public User(String firstName, String lastName, String emailID) {
-        super();
+    public User(Long id, String firstName, String lastName, String emailID, String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailID = emailID;
+        this.password = password;
     }
-
 }

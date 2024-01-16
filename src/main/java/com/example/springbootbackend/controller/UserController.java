@@ -1,8 +1,10 @@
 package com.example.springbootbackend.controller;
 
+import com.example.springbootbackend.DTO.UserDTO;
 import com.example.springbootbackend.exception.ResourceNotFoundException;
 import com.example.springbootbackend.model.User;
 import com.example.springbootbackend.repository.UserRepository;
+import com.example.springbootbackend.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +22,20 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    //save User NEW
+    @PostMapping("/users/save")
+    public String saveUser(@RequestBody UserDTO userDTO) {
+        String id = userService.addUser(userDTO);
+        return id;
+    }
 
     //get all users
     @GetMapping("/users")
