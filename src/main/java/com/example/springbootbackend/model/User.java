@@ -17,8 +17,8 @@ public class User {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
-    @Column(name = "email_id")
-    private String emailID;
+    @Column(name = "email")
+    private String email;
     @Column(name = "password")
     private String password;
 
@@ -26,11 +26,11 @@ public class User {
 
     }
 
-    public User(Long id, String firstName, String lastName, String emailID, String password) {
+    public User(Long id, String firstName, String lastName, String email, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailID = emailID;
+        this.email = email;
         this.password = password;
     }
 }

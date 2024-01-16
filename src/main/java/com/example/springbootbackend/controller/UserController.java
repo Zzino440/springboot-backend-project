@@ -1,10 +1,12 @@
 package com.example.springbootbackend.controller;
 
+import com.example.springbootbackend.DTO.LoginDTO;
 import com.example.springbootbackend.DTO.UserDTO;
 import com.example.springbootbackend.exception.ResourceNotFoundException;
 import com.example.springbootbackend.model.User;
 import com.example.springbootbackend.repository.UserRepository;
 import com.example.springbootbackend.services.UserService;
+import com.example.springbootbackend.utility.LoginMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +35,14 @@ public class UserController {
     //save User NEW
     @PostMapping("/users/save")
     public String saveUser(@RequestBody UserDTO userDTO) {
-        String id = userService.addUser(userDTO);
-        return id;
+        return userService.addUser(userDTO);
+    }
+
+    //login user NEW
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO){
+        LoginMessage loginMessage = userService.loginUser(loginDTO);
+        return ResponseEntity.ok(loginMessage);
     }
 
     //get all users
@@ -71,7 +79,7 @@ public class UserController {
 
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
-        user.setEmailID(userDetails.getEmailID());
+        user.setEmail(userDetails.getEmail());
 
         User updatedUser = userRepository.save(user);
         return ResponseEntity.ok(updatedUser);
