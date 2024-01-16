@@ -4,4 +4,5 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 @EnableWebSecurity
 public class SecurityConfig {
+
 }
