@@ -5,7 +5,7 @@ import com.example.springbootbackend.DTO.UserDTO;
 import com.example.springbootbackend.utility.LoginMessage;
 
 
-public interface UserService {
+public interface UserDao {
     String addUser(UserDTO userDTO);
 
     LoginMessage loginUser(LoginDTO loginDTO);

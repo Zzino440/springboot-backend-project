@@ -5,7 +5,7 @@ import com.example.springbootbackend.DTO.UserDTO;
 import com.example.springbootbackend.exception.ResourceNotFoundException;
 import com.example.springbootbackend.model.User;
 import com.example.springbootbackend.repository.UserRepository;
-import com.example.springbootbackend.service.UserService;
+import com.example.springbootbackend.service.UserDao;
 import com.example.springbootbackend.utility.LoginMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserDao userDao;
 
     @Autowired
     private UserRepository userRepository;
@@ -35,13 +35,13 @@ public class UserController {
     //save User NEW
     @PostMapping("/users/save")
     public String saveUser(@RequestBody UserDTO userDTO) {
-        return userService.addUser(userDTO);
+        return userDao.addUser(userDTO);
     }
 
     //login user NEW
     @PostMapping("users/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO){
-        LoginMessage loginMessage = userService.loginUser(loginDTO);
+        LoginMessage loginMessage = userDao.loginUser(loginDTO);
         return ResponseEntity.ok(loginMessage);
     }
 

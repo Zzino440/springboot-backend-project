@@ -4,7 +4,7 @@ import com.example.springbootbackend.DTO.LoginDTO;
 import com.example.springbootbackend.DTO.UserDTO;
 import com.example.springbootbackend.model.User;
 import com.example.springbootbackend.repository.UserRepository;
-import com.example.springbootbackend.service.UserService;
+import com.example.springbootbackend.service.UserDao;
 import com.example.springbootbackend.utility.LoginMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserImpl implements UserService {
+public class UserImpl implements UserDao {
 
     @Autowired
     private UserRepository userRepository;

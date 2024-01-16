@@ -1,11 +1,13 @@
 package com.example.springbootbackend.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "user")
 public class User {
@@ -21,16 +23,4 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
-
-    public User() {
-
-    }
-
-    public User(Long id, String firstName, String lastName, String email, String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
 }
