@@ -1,6 +1,6 @@
-package com.example.springbootbackend.repository;
+package com.example.springbootbackend.user.repository;
 
-import com.example.springbootbackend.model.User;
+import com.example.springbootbackend.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;

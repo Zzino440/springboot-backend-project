@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 //TODO remove the exclusion of spring security
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
+@SpringBootApplication/*(exclude = {SecurityAutoConfiguration.class })*/
 public class SpringbootBackendApplication {
 
     public static void main(String[] args) {

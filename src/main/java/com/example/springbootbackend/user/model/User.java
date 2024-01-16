@@ -1,4 +1,4 @@
-package com.example.springbootbackend.model;
+package com.example.springbootbackend.user.model;
 
 import jakarta.persistence.*;
 import lombok.*;

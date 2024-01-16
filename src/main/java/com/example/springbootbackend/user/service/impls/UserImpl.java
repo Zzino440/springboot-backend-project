@@ -1,10 +1,10 @@
-package com.example.springbootbackend.service.impls;
+package com.example.springbootbackend.user.service.impls;
 
-import com.example.springbootbackend.DTO.LoginDTO;
-import com.example.springbootbackend.DTO.UserDTO;
-import com.example.springbootbackend.model.User;
-import com.example.springbootbackend.repository.UserRepository;
-import com.example.springbootbackend.service.UserDao;
+import com.example.springbootbackend.user.DTO.LoginDTO;
+import com.example.springbootbackend.user.DTO.UserDTO;
+import com.example.springbootbackend.user.model.User;
+import com.example.springbootbackend.user.repository.UserRepository;
+import com.example.springbootbackend.user.service.UserDao;
 import com.example.springbootbackend.utility.LoginMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,8 +17,7 @@ public class UserImpl implements UserDao {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
+/*    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -35,8 +34,6 @@ public class UserImpl implements UserDao {
 
         return user.getFirstName();
     }
-
-    UserDTO userDTO;
 
     @Override
     public LoginMessage loginUser(LoginDTO loginDTO) {
@@ -59,5 +56,5 @@ public class UserImpl implements UserDao {
         } else {
             return new LoginMessage("Email not exits", false);
         }
-    }
+    }*/
 }

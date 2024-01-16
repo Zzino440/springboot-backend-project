@@ -1,4 +1,4 @@
-package com.example.springbootbackend.DTO;
+package com.example.springbootbackend.user.DTO;
 
 import lombok.*;
 
@@ -13,5 +13,4 @@ public class UserDTO {
     private String lastName;
     private String email;
     private String password;
-
 }
