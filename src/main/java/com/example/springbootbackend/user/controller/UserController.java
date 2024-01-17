@@ -1,12 +1,8 @@
 package com.example.springbootbackend.user.controller;
 
-import com.example.springbootbackend.user.DTO.LoginDTO;
-import com.example.springbootbackend.user.DTO.UserDTO;
 import com.example.springbootbackend.user.exception.ResourceNotFoundException;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.repository.UserRepository;
-import com.example.springbootbackend.user.service.UserDao;
-import com.example.springbootbackend.utility.LoginMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -24,26 +20,10 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserDao userDao;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
-/*
-    //save User NEW
-    @PostMapping("/users/save")
-    public String saveUser(@RequestBody UserDTO userDTO) {
-        return userDao.addUser(userDTO);
-    }
-
-    //login user NEW
-    @PostMapping("users/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO){
-        LoginMessage loginMessage = userDao.loginUser(loginDTO);
-        return ResponseEntity.ok(loginMessage);
-    }*/
 
     //get all users
     @GetMapping("/users")
