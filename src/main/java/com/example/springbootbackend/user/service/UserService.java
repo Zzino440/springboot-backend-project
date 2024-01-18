@@ -2,6 +2,7 @@ package com.example.springbootbackend.user.service;
 
 import com.example.springbootbackend.user.DTO.UserDTO;
 import com.example.springbootbackend.user.mapper.UserMapper;
+import com.example.springbootbackend.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,11 @@ public class UserService {
         return userDao.getAllUsers().stream()
                 .map(UserMapper::toUserDTO)
                 .collect(Collectors.toList());
+    }
+
+    public UserDTO createUser(User user) {
+        User savedUser = userDao.createUser(user);
+        return UserMapper.toUserDTO(savedUser);
     }
 
 }

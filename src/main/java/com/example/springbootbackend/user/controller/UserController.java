@@ -5,7 +5,6 @@ import com.example.springbootbackend.user.exception.ResourceNotFoundException;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.repository.UserRepository;
 import com.example.springbootbackend.user.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,14 +39,8 @@ public class UserController {
 
     //create user
     @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-        try {
-            String userJson = objectMapper.writeValueAsString(user);
-            log.info("User created: {}", userJson);
-        } catch (JsonProcessingException e) {
-            log.error("Error during user JSON conversion");
-        }
-        return userRepository.save(user);
+    public UserDTO createUser(@RequestBody User user) {
+        return userService.createUser(user);
     }
 
     //get user by id
