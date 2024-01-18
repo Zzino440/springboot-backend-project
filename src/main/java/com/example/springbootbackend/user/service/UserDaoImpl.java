@@ -31,8 +31,25 @@ public class UserDaoImpl implements UserDao {
         return this.findById(id);
     }
 
+    @Override
+    public User updateUser(Long id, User userDetails) {
+        User user = this.findById(id);
+
+        user.setFirstName(userDetails.getFirstName());
+        user.setLastName(userDetails.getLastName());
+        user.setEmail(userDetails.getEmail());
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        User user = this.findById(id);
+        userRepository.delete(user);
+    }
 
 
+    //utility methods
     private User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not exist with id:" + id));

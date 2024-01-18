@@ -6,7 +6,9 @@ import com.example.springbootbackend.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +31,18 @@ public class UserService {
     public UserDTO getUserById(Long id){
         User user = userDao.getUserById(id);
         return UserMapper.toUserDTO(user);
+    }
+
+    public UserDTO updateUser(Long id, User user){
+        User updatedUser = userDao.updateUser(id,user);
+        return UserMapper.toUserDTO(updatedUser);
+    }
+
+    public Map<String, Boolean> deleteUser(Long id){
+        userDao.deleteUser(id);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
     }
 
 }
