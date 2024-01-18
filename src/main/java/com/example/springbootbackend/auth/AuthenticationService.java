@@ -49,7 +49,7 @@ public class AuthenticationService {
         );
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
-        log.info(user.toString());
+        log.info("Dettagli utente loggato: {}", user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .id(user.getId())
