@@ -1,7 +1,7 @@
 package com.example.springbootbackend.auth;
 
 import com.example.springbootbackend.config.JwtService;
-import com.example.springbootbackend.user.model.Role;
+import com.example.springbootbackend.user.enums.Role;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
