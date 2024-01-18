@@ -1,5 +1,6 @@
 package com.example.springbootbackend.user.service;
 
+import com.example.springbootbackend.user.exception.ResourceNotFoundException;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,17 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User createUser(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return this.findById(id);
+    }
+
+
+
+    private User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not exist with id:" + id));
     }
 }

@@ -45,9 +45,9 @@ public class UserController {
 
     //get user by id
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserId(@PathVariable Long id) {
-        User user = this.findById(id);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserDTO> getUserId(@PathVariable Long id) {
+        UserDTO userDTO = this.userService.getUserById(id);
+        return ResponseEntity.ok(userDTO);
     }
 
     //update user

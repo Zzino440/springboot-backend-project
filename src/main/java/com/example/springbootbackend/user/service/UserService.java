@@ -26,4 +26,9 @@ public class UserService {
         return UserMapper.toUserDTO(savedUser);
     }
 
+    public UserDTO getUserById(Long id){
+        User user = userDao.getUserById(id);
+        return UserMapper.toUserDTO(user);
+    }
+
 }
