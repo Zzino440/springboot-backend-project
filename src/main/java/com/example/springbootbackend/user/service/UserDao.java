@@ -17,4 +17,7 @@ public interface UserDao {
 
     void deleteUser(Long id);
 
+    //utility methods
+    Boolean checkEmail(String email);
+
 }

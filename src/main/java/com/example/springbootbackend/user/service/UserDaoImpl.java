@@ -4,8 +4,10 @@ import com.example.springbootbackend.user.exception.ResourceNotFoundException;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +27,19 @@ public class UserDaoImpl implements UserDao {
         return userRepository.findAll();
     }
 
-    @Override
     public User createUser(User user) {
+        // Controlla se esiste già un utente con la stessa email
+        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+
+        if (existingUser.isPresent()) {
+            // Crea una risposta di errore personalizzata
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Un utente con questa email esiste già."
+            );
+        }
+
+        // Se non esiste, procedi con la creazione dell'utente
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -59,10 +72,19 @@ public class UserDaoImpl implements UserDao {
         userRepository.delete(user);
     }
 
+    @Override
+    public Boolean checkEmail(String email) {
+        // Controlla se esiste già un utente con la stessa email
+        Optional<User> existingUser = userRepository.findByEmail(email);
+        return existingUser.isPresent();
+    }
+
 
     //utility methods
     private User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not exist with id:" + id));
     }
+
+
 }

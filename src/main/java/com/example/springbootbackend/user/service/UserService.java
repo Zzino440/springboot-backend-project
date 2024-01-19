@@ -26,7 +26,6 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        log.info("Created User {}", user);
         return userDao.createUser(user);
     }
 
@@ -45,6 +44,10 @@ public class UserService {
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
+    }
+
+    public Boolean checkEmail(String email){
+        return userDao.checkEmail(email);
     }
 
 }
