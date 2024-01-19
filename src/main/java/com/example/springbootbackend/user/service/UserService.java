@@ -5,7 +5,6 @@ import com.example.springbootbackend.user.mapper.UserMapper;
 import com.example.springbootbackend.user.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -20,8 +19,6 @@ public class UserService {
 
     private final UserDao userDao;
 
-    private final PasswordEncoder passwordEncoder;
-
     public List<UserDTO> getAllUsers() {
         return userDao.getAllUsers().stream()
                 .map(UserMapper::toUserDTO)
@@ -29,7 +26,6 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         log.info("Created User {}", user);
         return userDao.createUser(user);
     }
