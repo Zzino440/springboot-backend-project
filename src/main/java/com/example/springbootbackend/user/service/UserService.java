@@ -30,6 +30,7 @@ public class UserService {
 
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        log.info("Created User {}", user);
         return userDao.createUser(user);
     }
 
@@ -39,6 +40,7 @@ public class UserService {
     }
 
     public User updateUser(Long id, User user) {
+        log.info("Updated User {}", user);
         return userDao.updateUser(id, user);
     }
 

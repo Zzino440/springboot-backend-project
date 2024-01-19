@@ -1,5 +1,6 @@
 package com.example.springbootbackend.user.DTO;
 
+import com.example.springbootbackend.user.enums.Role;
 import lombok.*;
 
 @Setter
@@ -13,5 +14,5 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
+    private Role role;
 }
