@@ -6,7 +6,6 @@ import com.example.springbootbackend.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +19,10 @@ import java.util.Map;
 @RequestMapping("api/v1/")
 public class UserController {
 
-    @Autowired
-    private ObjectMapper objectMapper;
 
-    @Autowired
-    private UserService userService;
+    private final ObjectMapper objectMapper;
+
+    private final UserService userService;
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
@@ -34,8 +32,8 @@ public class UserController {
 
     //create user
     @PostMapping("/users")
-    public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
-        UserDTO createdUser = userService.createUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
@@ -48,8 +46,8 @@ public class UserController {
 
     //update user
     @PutMapping("/users/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        UserDTO updatedUser = userService.updateUser(id, userDetails);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+        User updatedUser = userService.updateUser(id, userDetails);
         return ResponseEntity.ok(updatedUser);
     }
 

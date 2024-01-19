@@ -4,6 +4,8 @@ import com.example.springbootbackend.user.DTO.UserDTO;
 import com.example.springbootbackend.user.mapper.UserMapper;
 import com.example.springbootbackend.user.model.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -13,9 +15,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserDao userDao;
+
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserDTO> getAllUsers() {
         return userDao.getAllUsers().stream()
@@ -23,22 +28,21 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDTO createUser(User user) {
-        User savedUser = userDao.createUser(user);
-        return UserMapper.toUserDTO(savedUser);
+    public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userDao.createUser(user);
     }
 
-    public UserDTO getUserById(Long id){
+    public UserDTO getUserById(Long id) {
         User user = userDao.getUserById(id);
         return UserMapper.toUserDTO(user);
     }
 
-    public UserDTO updateUser(Long id, User user){
-        User updatedUser = userDao.updateUser(id,user);
-        return UserMapper.toUserDTO(updatedUser);
+    public User updateUser(Long id, User user) {
+        return userDao.updateUser(id, user);
     }
 
-    public Map<String, Boolean> deleteUser(Long id){
+    public Map<String, Boolean> deleteUser(Long id) {
         userDao.deleteUser(id);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);

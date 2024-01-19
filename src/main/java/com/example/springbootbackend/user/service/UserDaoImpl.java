@@ -3,17 +3,17 @@ package com.example.springbootbackend.user.service;
 import com.example.springbootbackend.user.exception.ResourceNotFoundException;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class UserDaoImpl implements UserDao {
 
     //injections
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     //methods implemented
     @Override
