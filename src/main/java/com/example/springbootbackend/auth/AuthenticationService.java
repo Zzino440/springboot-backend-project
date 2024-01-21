@@ -4,6 +4,7 @@ import com.example.springbootbackend.config.JwtService;
 import com.example.springbootbackend.user.enums.Role;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.repository.UserRepository;
+import com.example.springbootbackend.user.service.UserDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,8 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
+
+    private final UserDao userDao;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -55,5 +58,9 @@ public class AuthenticationService {
                 .id(user.getId())
                 .token(jwtToken)
                 .build();
+    }
+
+    public Boolean checkEmail(String email){
+        return userDao.checkEmail(email);
     }
 }

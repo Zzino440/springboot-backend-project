@@ -62,11 +62,4 @@ public class UserController {
         return ResponseEntity.ok(userService.deleteUser(id));
     }
 
-    /**method to check if a user with the same email exists on the db
-     * return true if the email is already in the db or false if not**/
-    @GetMapping("/users/check-email")
-    public Boolean checkEmail(@RequestParam("email") String email) {
-        return userService.checkEmail(email);
-    }
-
 }

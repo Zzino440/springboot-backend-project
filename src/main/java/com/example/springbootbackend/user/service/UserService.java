@@ -46,8 +46,6 @@ public class UserService {
         return response;
     }
 
-    public Boolean checkEmail(String email){
-        return userDao.checkEmail(email);
-    }
+
 
 }
