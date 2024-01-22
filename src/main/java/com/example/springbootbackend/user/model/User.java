@@ -2,6 +2,7 @@ package com.example.springbootbackend.user.model;
 
 import com.example.springbootbackend.user.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,12 +25,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "first_name")
+    @NotBlank(message = "Please provide a user firstName!")
     private String firstName;
     @Column(name = "last_name")
+    @NotBlank(message = "Please provide a user lastName!")
     private String lastName;
     @Column(name = "email")
+    @NotBlank(message = "Please provide a user email!")
     private String email;
     @Column(name = "password")
+    @NotBlank(message = "Please provide a user password!")
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;

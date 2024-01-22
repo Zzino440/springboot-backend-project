@@ -45,7 +45,4 @@ public class UserService {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
-
-
-
 }
