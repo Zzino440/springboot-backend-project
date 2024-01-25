@@ -1,5 +1,6 @@
 package com.example.springbootbackend.exceptions;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +26,17 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(", "));
 
         // Restituisci una risposta con lo stato BAD_REQUEST e il messaggio di errore
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
+        String errorMessage = ex.getConstraintViolations().stream()
+                .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
+                .collect(Collectors.joining(", "));
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 
