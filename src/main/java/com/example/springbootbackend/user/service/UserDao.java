@@ -9,6 +9,8 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
+    List<User> getAllUsersExceptCurrent(Long id);
+
     User createUser(User user);
 
     User getUserById(Long id);

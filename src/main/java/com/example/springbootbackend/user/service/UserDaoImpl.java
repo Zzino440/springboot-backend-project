@@ -27,6 +27,11 @@ public class UserDaoImpl implements UserDao {
         return userRepository.findAll();
     }
 
+    @Override
+    public List<User> getAllUsersExceptCurrent(Long id) {
+        return userRepository.findByIdNot(id);
+    }
+
     public User createUser(User user) {
         // Controlla se esiste già un utente con la stessa email
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
@@ -52,6 +57,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User updateUser(Long id, User userDetails) {
         var user = this.findById(id);
+
+        //check sulla mail di tutti gli utenti tranne quello corrente
+        this.checkIfEmailExistsElsewhere(id, userDetails.getEmail());
 
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
@@ -84,6 +92,15 @@ public class UserDaoImpl implements UserDao {
     private User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not exist with id:" + id));
+    }
+
+    public void checkIfEmailExistsElsewhere(Long currentUserId, String newEmail) {
+        userRepository.findByEmail(newEmail)
+                .ifPresent(existingUser -> {
+                    if (!existingUser.getId().equals(currentUserId)) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email già in uso");
+                    }
+                });
     }
 
 

@@ -10,6 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.stream.Collectors;
 
@@ -38,6 +39,15 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(", "));
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Object> handleResponseStatusException(ResponseStatusException ex, WebRequest request) {
+        // Creazione di un messaggio di errore personalizzato
+        String errorMessage = ex.getReason();
+
+        // Restituisci una risposta con lo stato definito nell'eccezione e il messaggio di errore
+        return ResponseEntity.status(ex.getStatusCode()).body(errorMessage);
     }
 
     // Altri gestori di eccezioni...

@@ -32,6 +32,12 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/users-not-current/{id}")
+    public ResponseEntity<List<UserDTO>> getAllUsersExceptCurrent(@PathVariable Long id) {
+        List<UserDTO> users = userService.getAllUsersExceptCurrent(id);
+        return ResponseEntity.ok(users);
+    }
+
     //create user
     @PostMapping("/users")
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {

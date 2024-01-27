@@ -25,6 +25,12 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public List<UserDTO> getAllUsersExceptCurrent(Long id){
+        return userDao.getAllUsersExceptCurrent(id).stream()
+                .map(UserMapper::toUserDTO)
+                .collect(Collectors.toList());
+    }
+
     public User createUser(User user) {
         return userDao.createUser(user);
     }
