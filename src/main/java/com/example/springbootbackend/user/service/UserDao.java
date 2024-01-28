@@ -2,6 +2,7 @@ package com.example.springbootbackend.user.service;
 
 
 import com.example.springbootbackend.user.model.User;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
-    List<User> getAllUsersExceptCurrent(Long id);
+    Page<User> getAllUsersExceptCurrent(Long id, int page, int size);
 
     User createUser(User user);
 

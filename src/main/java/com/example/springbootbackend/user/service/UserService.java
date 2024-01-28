@@ -5,6 +5,7 @@ import com.example.springbootbackend.user.mapper.UserMapper;
 import com.example.springbootbackend.user.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -25,11 +26,11 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public List<UserDTO> getAllUsersExceptCurrent(Long id){
-        return userDao.getAllUsersExceptCurrent(id).stream()
-                .map(UserMapper::toUserDTO)
-                .collect(Collectors.toList());
+    public Page<UserDTO> getAllUsersExceptCurrent(Long id, int page, int size) {
+        Page<User> usersPage = userDao.getAllUsersExceptCurrent(id, page, size);
+        return usersPage.map(UserMapper::toUserDTO);
     }
+
 
     public User createUser(User user) {
         return userDao.createUser(user);
