@@ -1,19 +1,17 @@
 package com.example.springbootbackend.user.controller;
 
 import com.example.springbootbackend.user.DTO.UserDTO;
-import com.example.springbootbackend.user.exception.ResourceNotFoundException;
 import com.example.springbootbackend.user.model.User;
-import com.example.springbootbackend.user.repository.UserRepository;
 import com.example.springbootbackend.user.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,14 +21,10 @@ import java.util.Map;
 @RequestMapping("api/v1/")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
@@ -38,51 +32,41 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/users-not-current/{id}")
+    public ResponseEntity<List<UserDTO>> getAllUsersExceptCurrent(@PathVariable Long id) {
+        List<UserDTO> users = userService.getAllUsersExceptCurrent(id);
+        return ResponseEntity.ok(users);
+    }
+
     //create user
     @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         try {
-            String userJson = objectMapper.writeValueAsString(user);
-            log.info("User created: {}", userJson);
-        } catch (JsonProcessingException e) {
-            log.error("Error during user JSON conversion");
+            User createdUser = userService.createUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
         }
-        return userRepository.save(user);
     }
 
     //get user by id
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserId(@PathVariable Long id) {
-        User user = this.findById(id);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserDTO> getUserId(@PathVariable Long id) {
+        UserDTO userDTO = this.userService.getUserById(id);
+        return ResponseEntity.ok(userDTO);
     }
 
     //update user
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        User user = this.findById(id);
-
-        user.setFirstName(userDetails.getFirstName());
-        user.setLastName(userDetails.getLastName());
-        user.setEmail(userDetails.getEmail());
-
-        User updatedUser = userRepository.save(user);
+    public ResponseEntity<User> updateUser(@Valid @PathVariable Long id, @RequestBody User userDetails) {
+        User updatedUser = userService.updateUser(id, userDetails);
         return ResponseEntity.ok(updatedUser);
     }
 
     //delete user
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id) {
-        User user = this.findById(id);
-        userRepository.delete(user);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
-    }
-
-    private User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not exist with id:" + id));
+        return ResponseEntity.ok(userService.deleteUser(id));
     }
 
 }
