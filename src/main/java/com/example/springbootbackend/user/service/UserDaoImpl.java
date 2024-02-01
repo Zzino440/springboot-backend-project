@@ -4,6 +4,9 @@ import com.example.springbootbackend.user.exception.ResourceNotFoundException;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -28,8 +31,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAllUsersExceptCurrent(Long id) {
-        return userRepository.findByIdNot(id);
+    public Page<User> getAllUsersExceptCurrent(Long id, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findByIdNot(id,pageable);
     }
 
     public User createUser(User user) {

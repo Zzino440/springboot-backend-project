@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +33,13 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/users-not-current/{id}")
-    public ResponseEntity<List<UserDTO>> getAllUsersExceptCurrent(@PathVariable Long id) {
-        List<UserDTO> users = userService.getAllUsersExceptCurrent(id);
+    @GetMapping("/users-not-current")
+    public ResponseEntity<Page<UserDTO>> getAllUsersExceptCurrent(
+            @RequestParam Long currentUserId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<UserDTO> users = userService.getAllUsersExceptCurrent(currentUserId, page, size);
         return ResponseEntity.ok(users);
     }
 
