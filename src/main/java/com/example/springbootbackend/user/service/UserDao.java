@@ -23,4 +23,6 @@ public interface UserDao {
     //utility methods
     Boolean checkEmail(String email);
 
+    List<String> searchUserNamesByEmail(String email);
+
 }

@@ -52,4 +52,8 @@ public class UserService {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
+
+    public List<String> searchUserNamesByEmail(String email){
+        return userDao.searchUserNamesByEmail(email);
+    }
 }

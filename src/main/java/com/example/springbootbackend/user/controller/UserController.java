@@ -74,4 +74,9 @@ public class UserController {
         return ResponseEntity.ok(userService.deleteUser(id));
     }
 
+    @GetMapping("users/searchByEmail")
+    public ResponseEntity<List<String>> getUserNamesByEmail(@RequestParam String email) {
+        return ResponseEntity.ok(userService.searchUserNamesByEmail(email));
+    }
+
 }

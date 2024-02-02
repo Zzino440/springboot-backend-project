@@ -91,6 +91,11 @@ public class UserDaoImpl implements UserDao {
         return existingUser.isPresent();
     }
 
+    @Override
+    public List<String> searchUserNamesByEmail(String email) {
+        return userRepository.findUserNamesByEmailLike(email);
+    }
+
 
     //utility methods
     private User findById(Long id) {
