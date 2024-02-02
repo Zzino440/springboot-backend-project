@@ -16,9 +16,10 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+
     Page<User> findByIdNot(Long userId, Pageable pageable);
 
     // Metodo per cercare le mail degli utenti per email con un pattern
     @Query("SELECT u.email FROM User u WHERE u.email LIKE %:email%")
-    List<String> findUserNamesByEmailLike(@Param("email") String email);
+    List<String> findUserNamesByEmailLike(String email);
 }
