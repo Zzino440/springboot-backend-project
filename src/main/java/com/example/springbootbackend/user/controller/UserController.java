@@ -36,10 +36,11 @@ public class UserController {
     @GetMapping("/users-not-current")
     public ResponseEntity<Page<UserDTO>> getAllUsersExceptCurrent(
             @RequestParam Long currentUserId,
+            @RequestParam String userEmail,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        Page<UserDTO> users = userService.getAllUsersExceptCurrent(currentUserId, page, size);
+        Page<UserDTO> users = userService.getAllUsersExceptCurrent(currentUserId, userEmail, page, size);
         return ResponseEntity.ok(users);
     }
 
@@ -77,6 +78,13 @@ public class UserController {
     @GetMapping("users/searchByEmail")
     public ResponseEntity<List<String>> getUserNamesByEmail(@RequestParam String email) {
         return ResponseEntity.ok(userService.searchUserNamesByEmail(email));
+    }
+
+    //test controller that creates an x amount of user determined bu numberOfUsers input var
+    @PostMapping("/generate-users")
+    public ResponseEntity<String> generateUsers() {
+        userService.generateTestUsers(1000);
+        return ResponseEntity.ok("1000 test users generated successfully");
     }
 
 }
