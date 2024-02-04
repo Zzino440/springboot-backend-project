@@ -77,7 +77,7 @@ public class UserService {
             user.setFirstName("TestName");
             user.setLastName("TestLastName");
             user.setPassword(PASSWORD_ENCRYPTED); // Usa la password criptata
-            user.setRole(Role.ADMIN); // Assegna un ruolo casuale
+            user.setRole(Role.valueOf(ROLES[RANDOM.nextInt(ROLES.length)]));
 
             users.add(user);
         }
