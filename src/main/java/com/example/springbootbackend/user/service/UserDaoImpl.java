@@ -31,9 +31,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Page<User> getAllUsersExceptCurrent(Long id, int page, int size) {
+    public Page<User> getAllUsersExceptCurrent(Long id, String email, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return userRepository.findByIdNot(id,pageable);
+        return userRepository.findAllUsersExceptCurrentByEmailLike(id, email, pageable);
     }
 
     public User createUser(User user) {
@@ -89,6 +89,11 @@ public class UserDaoImpl implements UserDao {
         // Controlla se esiste già un utente con la stessa email
         Optional<User> existingUser = userRepository.findByEmail(email);
         return existingUser.isPresent();
+    }
+
+    @Override
+    public List<String> searchUserNamesByEmail(String email) {
+        return userRepository.findUserNamesByEmailLike(email);
     }
 
 

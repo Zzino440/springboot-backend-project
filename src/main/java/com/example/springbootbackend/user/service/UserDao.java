@@ -10,7 +10,7 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
-    Page<User> getAllUsersExceptCurrent(Long id, int page, int size);
+    Page<User> getAllUsersExceptCurrent(Long id, String email, int page, int size);
 
     User createUser(User user);
 
@@ -22,5 +22,7 @@ public interface UserDao {
 
     //utility methods
     Boolean checkEmail(String email);
+
+    List<String> searchUserNamesByEmail(String email);
 
 }
