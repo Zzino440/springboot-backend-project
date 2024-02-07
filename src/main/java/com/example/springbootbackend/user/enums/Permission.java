@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Permission {
 
+    //user permissions
     USER_READ("user:read"),
     USER_UPDATE("user:update"),
     USER_POST("user:post"),

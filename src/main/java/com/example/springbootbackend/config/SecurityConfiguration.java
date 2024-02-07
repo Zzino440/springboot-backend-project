@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,6 +20,7 @@ import static org.springframework.http.HttpMethod.*;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -31,12 +33,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
 
-                        .requestMatchers("api/v1/users/**").hasRole(ADMIN.name())
+/*                        .requestMatchers("api/v1/users/**").hasRole(ADMIN.name())
 
                         .requestMatchers(GET,"api/v1/users/**").hasAuthority(ADMIN_READ.name())
                         .requestMatchers(POST,"api/v1/users/**").hasAuthority(ADMIN_POST.name())
                         .requestMatchers(PUT,"api/v1/users/**").hasAuthority(ADMIN_UPDATE.name())
-                        .requestMatchers(DELETE,"api/v1/users/**").hasAuthority(ADMIN_DELETE.name())
+                        .requestMatchers(DELETE,"api/v1/users/**").hasAuthority(ADMIN_DELETE.name())*/
 
                         .requestMatchers("api/v1/demo-controller/**").hasRole(USER.name())
                         .requestMatchers(GET,"api/v1/demo-controller").hasAuthority(USER_READ.name())
