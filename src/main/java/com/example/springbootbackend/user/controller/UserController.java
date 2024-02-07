@@ -49,7 +49,7 @@ public class UserController {
 
     //create user
     @PostMapping("")
-    @PreAuthorize("hasAuthority('admin:post')")
+    @PreAuthorize("hasAuthority('admin:create')")
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         try {
             User createdUser = userService.createUser(user);

@@ -10,12 +10,12 @@ public enum Permission {
     //user permissions
     USER_READ("user:read"),
     USER_UPDATE("user:update"),
-    USER_POST("user:post"),
+    USER_CREATE("user:create"),
     USER_DELETE("user:delete"),
 
     ADMIN_READ("admin:read"),
     ADMIN_UPDATE("admin:update"),
-    ADMIN_POST("admin:post"),
+    ADMIN_CREATE("admin:create"),
     ADMIN_DELETE("admin:delete");
 
 
