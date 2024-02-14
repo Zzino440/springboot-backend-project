@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,7 +20,8 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("api/v1/")
+@RequestMapping("api/v1/users/")
+@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 public class UserController {
 
 
@@ -27,13 +29,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/users")
+/*    @GetMapping("")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
-    }
+    }*/
 
-    @GetMapping("/users-not-current")
+    @GetMapping("/not-current")
+    @PreAuthorize("hasAnyAuthority('admin:read', 'user:read')")
     public ResponseEntity<Page<UserDTO>> getAllUsersExceptCurrent(
             @RequestParam Long currentUserId,
             @RequestParam String userEmail,
@@ -45,7 +48,8 @@ public class UserController {
     }
 
     //create user
-    @PostMapping("/users")
+    @PostMapping("")
+    @PreAuthorize("hasAuthority('admin:create')")
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         try {
             User createdUser = userService.createUser(user);
@@ -56,32 +60,37 @@ public class UserController {
     }
 
     //get user by id
-    @GetMapping("/users/{id}")
+    @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('admin:read', 'user:read')")
     public ResponseEntity<UserDTO> getUserId(@PathVariable Long id) {
         UserDTO userDTO = this.userService.getUserById(id);
         return ResponseEntity.ok(userDTO);
     }
 
     //update user
-    @PutMapping("/users/{id}")
+    @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('admin:update')")
     public ResponseEntity<User> updateUser(@Valid @PathVariable Long id, @RequestBody User userDetails) {
         User updatedUser = userService.updateUser(id, userDetails);
         return ResponseEntity.ok(updatedUser);
     }
 
     //delete user
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('admin:delete')")
     public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.deleteUser(id));
     }
 
-    @GetMapping("users/searchByEmail")
+    @GetMapping("searchByEmail")
+    @PreAuthorize("hasAnyAuthority('admin:read', 'user:read')")
     public ResponseEntity<List<String>> getUserNamesByEmail(@RequestParam String email) {
         return ResponseEntity.ok(userService.searchUserNamesByEmail(email));
     }
 
     //test controller that creates an x amount of user determined bu numberOfUsers input var
-    @PostMapping("/generate-users")
+    @PostMapping("generate-users")
+    @PreAuthorize("hasAuthority('admin:create')")
     public ResponseEntity<String> generateUsers() {
         userService.generateTestUsers(1000);
         return ResponseEntity.ok("1000 test users generated successfully");

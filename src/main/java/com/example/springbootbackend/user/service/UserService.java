@@ -66,8 +66,10 @@ public class UserService {
         return userDao.searchUserNamesByEmail(email);
     }
 
-    //test Method
 
+
+
+    //test Method
     @Transactional
     public void generateTestUsers(int numberOfUsers) {
         List<User> users = new ArrayList<>();
@@ -77,7 +79,7 @@ public class UserService {
             user.setFirstName("TestName");
             user.setLastName("TestLastName");
             user.setPassword(PASSWORD_ENCRYPTED); // Usa la password criptata
-            user.setRole(Role.valueOf(ROLES[RANDOM.nextInt(ROLES.length)]));
+            user.setRole(Role.valueOf(ROLES[RANDOM.nextInt(ROLES.length)])); //RUOLO RANDOM
 
             users.add(user);
         }
