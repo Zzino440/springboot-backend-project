@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: default
+  datasource:
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:3306/my-project-db${DATABASE_OPTIONS:?allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${DATABASE_USER:root}
+    password: ${DATABASE_PASSWORD:Alienusa01}
+  jpa:
+    hibernate:
+      ddl-auto: update

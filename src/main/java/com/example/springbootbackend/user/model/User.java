@@ -1,11 +1,15 @@
 package com.example.springbootbackend.user.model;
 
+import com.example.springbootbackend.user.enums.Permission;
+import com.example.springbootbackend.user.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Permissions;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,19 +27,23 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "first_name")
+    @NotBlank(message = "Please provide a user firstName!")
     private String firstName;
     @Column(name = "last_name")
+    @NotBlank(message = "Please provide a user lastName!")
     private String lastName;
     @Column(name = "email")
+    @NotBlank(message = "Please provide a user email!")
     private String email;
     @Column(name = "password")
+    @NotBlank(message = "Please provide a user password!")
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAuthorities();
     }
 
     @Override
