@@ -107,10 +107,8 @@ public class UserDaoImpl implements UserDao {
         userRepository.findByEmail(newEmail)
                 .ifPresent(existingUser -> {
                     if (!existingUser.getId().equals(currentUserId)) {
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email già in uso");
+                        throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE , "Email già in uso");
                     }
                 });
     }
-
-
 }
