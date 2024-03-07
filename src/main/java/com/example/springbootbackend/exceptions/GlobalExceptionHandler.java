@@ -16,6 +16,19 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GlobalExceptionHandler {
 
+    /**
+     * Custom Exception Handler per questo progetto*/
+    @ExceptionHandler(value = MyProjectException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleCustomExceptions(MyProjectException myProjectException) {
+
+        //utilizzo il metodo getEffectiveDescription() per recuperare l'errore in modo dinamico
+        String errorMessage = myProjectException.getEffectiveDescription();
+        HttpStatus errorCode = myProjectException.getMyProjectError().getHttpStatus();
+
+        return ResponseEntity.status(errorCode).body(errorMessage);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -47,19 +60,6 @@ public class GlobalExceptionHandler {
 
         // Restituisci una risposta con lo stato definito nell'eccezione e il messaggio di errore
         return ResponseEntity.status(ex.getStatusCode()).body(errorMessage);
-    }
-
-    /**
-     * Custom Exception Handler per questo progetto*/
-    @ExceptionHandler(value = MyProjectException.class)
-    @ResponseBody
-    public ResponseEntity<Object> handleCustomExceptions(MyProjectException myProjectException) {
-
-        //utilizzo il metodo getEffectiveDescription() per recuperare l'errore in modo dinamico
-        String errorMessage = myProjectException.getEffectiveDescription();
-        HttpStatus errorCode = myProjectException.getMyProjectError().getHttpStatus();
-
-        return ResponseEntity.status(errorCode).body(errorMessage);
     }
 
 
