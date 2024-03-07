@@ -51,7 +51,6 @@ public class UserService {
     }
 
     public User updateUser(Long id, User user) {
-        log.info("Updated User {}", user);
         return userDao.updateUser(id, user);
     }
 

@@ -1,6 +1,7 @@
 package com.example.springbootbackend.exceptions;
 
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -12,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -45,6 +47,19 @@ public class GlobalExceptionHandler {
 
         // Restituisci una risposta con lo stato definito nell'eccezione e il messaggio di errore
         return ResponseEntity.status(ex.getStatusCode()).body(errorMessage);
+    }
+
+    /**
+     * Custom Exception Handler per questo progetto*/
+    @ExceptionHandler(value = MyProjectException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleCustomExceptions(MyProjectException myProjectException) {
+
+        //utilizzo il metodo getEffectiveDescription() per recuperare l'errore in modo dinamico
+        String errorMessage = myProjectException.getEffectiveDescription();
+        HttpStatus errorCode = myProjectException.getMyProjectError().getHttpStatus();
+
+        return ResponseEntity.status(errorCode).body(errorMessage);
     }
 
 
