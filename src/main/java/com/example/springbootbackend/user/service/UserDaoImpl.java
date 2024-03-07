@@ -1,5 +1,7 @@
 package com.example.springbootbackend.user.service;
 
+import com.example.springbootbackend.exceptions.MyProjectError;
+import com.example.springbootbackend.exceptions.MyProjectException;
 import com.example.springbootbackend.user.exception.ResourceNotFoundException;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.repository.UserRepository;
@@ -7,13 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.springbootbackend.exceptions.MyProjectError.EMAIL_ALREADY_IN_USE;
+import static com.example.springbootbackend.exceptions.MyProjectError.USER_WITH_THIS_EMAIL_ALREADY_EXISTS;
 
 @Component
 @RequiredArgsConstructor
@@ -42,10 +45,7 @@ public class UserDaoImpl implements UserDao {
 
         if (existingUser.isPresent()) {
             // Crea una risposta di errore personalizzata
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Un utente con questa email esiste già."
-            );
+            throw new MyProjectException(USER_WITH_THIS_EMAIL_ALREADY_EXISTS);
         }
 
         // Se non esiste, procedi con la creazione dell'utente
@@ -103,12 +103,13 @@ public class UserDaoImpl implements UserDao {
                 .orElseThrow(() -> new ResourceNotFoundException("User not exist with id:" + id));
     }
 
-    public void checkIfEmailExistsElsewhere(Long currentUserId, String newEmail) {
+    public void checkIfEmailExistsElsewhere(Long currentUserId, String newEmail) throws MyProjectException {
         userRepository.findByEmail(newEmail)
                 .ifPresent(existingUser -> {
                     if (!existingUser.getId().equals(currentUserId)) {
-                        throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE , "Email già in uso");
+                        throw new MyProjectException(EMAIL_ALREADY_IN_USE, "Email " + newEmail + " is already in use");
                     }
                 });
     }
+
 }
