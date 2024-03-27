@@ -1,17 +1,14 @@
 package com.example.springbootbackend.user.model;
 
-import com.example.springbootbackend.user.enums.Permission;
 import com.example.springbootbackend.user.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.security.Permissions;
 import java.util.Collection;
-import java.util.List;
 
 @Setter
 @Getter
@@ -39,6 +36,7 @@ public class User implements UserDetails {
     @NotBlank(message = "Please provide a user password!")
     private String password;
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "Please provide a user role!")
     private Role role;
 
     @Override
