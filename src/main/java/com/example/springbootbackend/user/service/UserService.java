@@ -97,14 +97,19 @@ public class UserService {
         return response;
     }
 
+
     public List<String> searchUserNamesByEmail(String email) {
-        return userRepository.findUserNamesByEmailLike(email);
+        List<String> userEmails = userRepository.findUserNamesByEmailLike(email);
+/*        if (userEmails.isEmpty()) { TODO - vedere a cosa serviva questa eccezione
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Email found for the current pattern: " + email);
+        }*/
+        return userEmails;
     }
 
     //utility methods
     private User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not exist with id:" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("User doesn't exist with id:" + id));
     }
 
     public void checkIfEmailExistsElsewhere(Long currentUserId, String newEmail) throws MyProjectException {

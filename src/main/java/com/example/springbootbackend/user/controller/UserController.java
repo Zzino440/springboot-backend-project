@@ -1,6 +1,7 @@
 package com.example.springbootbackend.user.controller;
 
 import com.example.springbootbackend.user.DTO.UserDTO;
+import com.example.springbootbackend.user.mapper.UserMapper;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,16 +25,7 @@ import java.util.Map;
 @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 public class UserController {
 
-
-    private final ObjectMapper objectMapper;
-
     private final UserService userService;
-
-/*    @GetMapping("")
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }*/
 
     @GetMapping("/not-current")
     @PreAuthorize("hasAnyAuthority('admin:read', 'user:read')")
@@ -53,7 +45,8 @@ public class UserController {
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         try {
             User createdUser = userService.createUser(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+            UserDTO createdUserDTO = UserMapper.toUserDTO(createdUser);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDTO);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
         }
@@ -70,9 +63,10 @@ public class UserController {
     //update user
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<User> updateUser(@Valid @PathVariable Long id, @RequestBody User userDetails) {
+    public ResponseEntity<UserDTO> updateUser(@Valid @PathVariable Long id, @RequestBody User userDetails) {
         User updatedUser = userService.updateUser(id, userDetails);
-        return ResponseEntity.ok(updatedUser);
+        UserDTO updateUserDTO = UserMapper.toUserDTO(updatedUser);
+        return ResponseEntity.ok(updateUserDTO);
     }
 
     //delete user
@@ -88,7 +82,7 @@ public class UserController {
         return ResponseEntity.ok(userService.searchUserNamesByEmail(email));
     }
 
-    //test controller that creates an x amount of user determined bu numberOfUsers input var
+    //test controller that creates an x amount of user determined by numberOfUsers input var
     @PostMapping("generate-users")
     @PreAuthorize("hasAuthority('admin:create')")
     public ResponseEntity<String> generateUsers() {
