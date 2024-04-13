@@ -39,7 +39,16 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    //create user
+    /**
+     * This method is used to create a new user.
+     * It accepts a User object as a request body and returns a ResponseEntity.
+     * The ResponseEntity contains either the created UserDTO object or an error message.
+     * This method can only be accessed by users with 'admin:create' authority.
+     *
+     * @param user This is a User object that is passed in the request body. It contains the details of the user to be created.
+     * @return ResponseEntity This returns a ResponseEntity that contains either the created UserDTO object or an error message.
+     * @throws ResponseStatusException This exception is thrown when there is an error during the creation of the user.
+     */
     @PostMapping("")
     @PreAuthorize("hasAuthority('admin:create')")
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
