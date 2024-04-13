@@ -59,6 +59,6 @@ jobs:
           use_existing_version_if_available: true
           application_name: my-proj-dev #Application name we created in Elastic BeanStalk
           environment_name: My-proj-dev-env #Environment name we created in Elastic BeanStalk
-          version_label: my-proj-dev-version-1.0.4
+          version_label: my-proj-dev-version-1.0.5
           region: eu-west-1 #VERY IMPORTANT: AWS Region where initially Applciation was created in AWS EBS. We created in us-east-1 which is N-Virginia
           deployment_package: springboot-backend-0.0.1-SNAPSHOT.jar #download artifacts from previous job
