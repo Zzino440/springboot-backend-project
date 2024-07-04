@@ -50,9 +50,6 @@ public class UserService {
     public Page<UserDTO> getAllUsersExceptCurrent(Long id, String email, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> usersPage = userRepository.findAllUsersExceptCurrentByEmailLike(id, email, pageable);
-        if (usersPage.isEmpty()) {
-            throw new MyProjectException(MyProjectError.USERS_NOT_FOUND, "No users found with the provided criteria");
-        }
         return usersPage.map(UserMapper::toUserDTO);
     }
 
@@ -110,6 +107,7 @@ public class UserService {
     }
 
     //utility methods
+    //method used to find user by id => used in various methods (getUserById, updateUser, deleteUser, etc...)
     private User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new MyProjectException(MyProjectError.USER_NOT_FOUND, "User doesn't exist with id:" + id));

@@ -21,7 +21,8 @@ public enum MyProjectError {
     USER_NOT_FOUND("User doesn't exist with the provided id", HttpStatus.NOT_FOUND),
     USERS_NOT_FOUND("No users found with the provided criteria", HttpStatus.NOT_FOUND),
     EMAIL_ALREADY_IN_USE("Email already in use", HttpStatus.NOT_ACCEPTABLE),
-    USER_WITH_THIS_EMAIL_ALREADY_EXISTS("A user with this email already exists", HttpStatus.NOT_ACCEPTABLE);
+    USER_WITH_THIS_EMAIL_ALREADY_EXISTS("A user with this email already exists", HttpStatus.NOT_ACCEPTABLE),
+    USER_CREATION_GENERIC_ERROR("An error occurred while creating the user", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final String description;
     private final HttpStatus httpStatus;
