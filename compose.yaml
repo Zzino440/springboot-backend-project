@@ -1,8 +1,12 @@
 version: "3.8"
 services:
   server:
-    build: .
-    restart: unless-stopped
+    build:
+      dockerfile: Dockerfile
+      context: .
+      args:
+        JAR_FILE: './target/springboot-backend-0.0.1-SNAPSHOT.jar'
+    restart: on-failure
     container_name: "backend"
     environment:
       DATABASE_USER: root
@@ -18,7 +22,7 @@ services:
   mysql:
       image: "mysql:8.0"
       container_name: "mysql_db"
-      restart: unless-stopped
+      restart: on-failure
       ports:
         - "3307:3306"
       networks:

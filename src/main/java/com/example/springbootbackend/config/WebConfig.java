@@ -16,6 +16,8 @@ public class WebConfig {
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
+                                "http://localhost",
+                                "http://localhost:80",
                                 "http://localhost:4200",
                                 "http://my-proj-dev.eu-west-1.elasticbeanstalk.com",
                                 "http://my-proj-fe-dev.s3-website-eu-west-1.amazonaws.com"
