@@ -2,13 +2,13 @@ spring:
   profiles:
     active: default
   datasource:
-    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:my-project-db}${DATABASE_OPTIONS:}
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:my-project-db}
     username: ${DATABASE_USER:root}
     password: ${DATABASE_PASSWORD:Alienusa01}
   jpa:
     hibernate:
       ddl-auto: update
 #server port utile per quando si deploya su AWS
-server:
-  port: ${SERVER_PORT:}
+#server:
+#  port: ${SERVER_PORT:}
 

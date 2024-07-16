@@ -1,5 +1,6 @@
 package com.example.springbootbackend.user.service;
 
+import com.example.springbootbackend.exceptions.MyProjectError;
 import com.example.springbootbackend.exceptions.MyProjectException;
 import com.example.springbootbackend.user.DTO.UserDTO;
 import com.example.springbootbackend.user.enums.Role;
@@ -12,9 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -100,16 +103,14 @@ public class UserService {
 
     public List<String> searchUserNamesByEmail(String email) {
         List<String> userEmails = userRepository.findUserNamesByEmailLike(email);
-/*        if (userEmails.isEmpty()) { TODO - vedere a cosa serviva questa eccezione
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Email found for the current pattern: " + email);
-        }*/
         return userEmails;
     }
 
     //utility methods
+    //method used to find user by id => used in various methods (getUserById, updateUser, deleteUser, etc...)
     private User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User doesn't exist with id:" + id));
+                .orElseThrow(() -> new MyProjectException(MyProjectError.USER_NOT_FOUND, "User doesn't exist with id:" + id));
     }
 
     public void checkIfEmailExistsElsewhere(Long currentUserId, String newEmail) throws MyProjectException {

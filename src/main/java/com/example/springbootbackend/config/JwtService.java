@@ -1,5 +1,7 @@
 package com.example.springbootbackend.config;
 
+import com.example.springbootbackend.exceptions.MyProjectError;
+import com.example.springbootbackend.exceptions.MyProjectException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -48,7 +50,13 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        if (username.equals(userDetails.getUsername())) {
+            if (isTokenExpired(token)) {
+                throw new MyProjectException(MyProjectError.TOKEN_EXPIRED, "The token is expired");
+            }
+            return true;
+        }
+        return false;
     }
 
     private boolean isTokenExpired(String token) {

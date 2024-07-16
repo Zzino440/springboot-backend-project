@@ -1,6 +1,8 @@
 package com.example.springbootbackend.auth;
 
 import com.example.springbootbackend.config.JwtService;
+import com.example.springbootbackend.exceptions.MyProjectError;
+import com.example.springbootbackend.exceptions.MyProjectException;
 import com.example.springbootbackend.user.enums.Role;
 import com.example.springbootbackend.user.model.User;
 import com.example.springbootbackend.user.repository.UserRepository;
@@ -43,14 +45,21 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
+
+        if (userOptional.isEmpty()) {
+            throw new MyProjectException(MyProjectError.EMAIL_NOT_FOUND, "No user found with the provided email");
+        }
+        User user = userOptional.get();
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new MyProjectException(MyProjectError.INVALID_PASSWORD, "The provided password is incorrect");
+        }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
         log.info("Dettagli utente loggato: {}", user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()

@@ -1,5 +1,7 @@
 package com.example.springbootbackend.user.controller;
 
+import com.example.springbootbackend.exceptions.MyProjectError;
+import com.example.springbootbackend.exceptions.MyProjectException;
 import com.example.springbootbackend.user.DTO.UserDTO;
 import com.example.springbootbackend.user.mapper.UserMapper;
 import com.example.springbootbackend.user.model.User;
@@ -56,8 +58,9 @@ public class UserController {
             User createdUser = userService.createUser(user);
             UserDTO createdUserDTO = UserMapper.toUserDTO(createdUser);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDTO);
-        } catch (ResponseStatusException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+        } catch (MyProjectException e) {
+            // Qui catturi la tua eccezione personalizzata e rispondi con il messaggio di errore
+            throw new MyProjectException(MyProjectError.USER_CREATION_GENERIC_ERROR);
         }
     }
 
