@@ -2,11 +2,13 @@ package com.example.springbootbackend.vocabulary.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class Vocabulary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
