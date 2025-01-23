@@ -20,11 +20,13 @@ public class CategoryService {
         // Creazione Vocabulary
         Vocabulary legalEntity = new Vocabulary();
         legalEntity.setName("Legal Entity");
+        legalEntity.setVocabularyCode("LE");
         legalEntity.setDescription("Legal entities like companies or organizations");
         vocabularyRepository.save(legalEntity);
 
         Vocabulary businessUnit = new Vocabulary();
         businessUnit.setName("Business Unit");
+        businessUnit.setVocabularyCode("BU");
         businessUnit.setDescription("Business Units within Legal Entities");
         vocabularyRepository.save(businessUnit);
 
