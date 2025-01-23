@@ -27,14 +27,17 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        //examples of how to use the roles on the security config
                         .requestMatchers("api/v1/demo-controller/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                // Configura Basic Authentication manualmente
+                .httpBasic(httpBasic -> httpBasic.realmName("MyRealm"))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
 
+        return http.build();
     }
+
+
 }
