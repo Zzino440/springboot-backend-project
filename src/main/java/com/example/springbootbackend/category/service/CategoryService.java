@@ -1,20 +1,38 @@
 package com.example.springbootbackend.category.service;
 
+import com.example.springbootbackend.category.dto.CategoryDTO;
+import com.example.springbootbackend.category.mapper.CategoryMapper;
 import com.example.springbootbackend.category.model.Category;
 import com.example.springbootbackend.category.repository.CategoryRepository;
 import com.example.springbootbackend.vocabulary.model.Vocabulary;
 import com.example.springbootbackend.vocabulary.repository.VocabularyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
 
-    @Autowired
-    private VocabularyRepository vocabularyRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final VocabularyRepository vocabularyRepository;
+    private final CategoryRepository categoryRepository;
+
+
+    public CategoryDTO getCategoryById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        return CategoryMapper.toDTO(category);
+    }
+
+    public List<CategoryDTO> getCategoriesByVocabularyId(Long vocabularyId) {
+        List<Category> categories = categoryRepository.findByVocabularyId(vocabularyId);
+        return categories.stream()
+                .map(CategoryMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 
     public void createSampleData() {
         // Creazione Vocabulary
