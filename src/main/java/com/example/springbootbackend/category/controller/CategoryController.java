@@ -25,6 +25,12 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getCategoriesByVocabularyId(vocabularyId));
     }
 
+    @PatchMapping("{id}")
+    public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO) {
+        CategoryDTO updatedCategory = categoryService.updateCategory(categoryDTO);
+        return ResponseEntity.ok(updatedCategory);
+    }
+
     @PostMapping("sampleData")
     public ResponseEntity<?> createSampleData() {
         categoryService.createSampleData();

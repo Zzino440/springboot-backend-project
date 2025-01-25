@@ -12,16 +12,16 @@ public class CategoryMapper {
                 .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
-                .vocabularyId(category.getVocabulary() != null ? category.getVocabulary().getId() : null)
-                .vocabularyName(category.getVocabulary() != null ? category.getVocabulary().getName() : null)
+/*                .vocabularyId(category.getVocabulary() != null ? category.getVocabulary().getId() : null)
+                .vocabularyName(category.getVocabulary() != null ? category.getVocabulary().getName() : null)*/
                 .parentCategoryId(category.getParentCategory() != null ? category.getParentCategory().getId() : null)
                 .parentCategoryName(category.getParentCategory() != null ? category.getParentCategory().getName() : null)
-                .subCategories(category.getSubCategories().stream()
+/*                .subCategories(category.getSubCategories().stream()
                         .map(subCategory -> CategoryDTO.SubCategoryDTO.builder()
                                 .id(subCategory.getId())
                                 .name(subCategory.getName())
                                 .build())
-                        .collect(Collectors.toList()))
+                        .collect(Collectors.toList()))*/
                 .build();
     }
 }

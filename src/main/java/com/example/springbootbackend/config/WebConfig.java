@@ -22,7 +22,7 @@ public class WebConfig {
                                 "http://my-proj-dev.eu-west-1.elasticbeanstalk.com",
                                 "http://my-proj-fe-dev.s3-website-eu-west-1.amazonaws.com"
                         )
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }

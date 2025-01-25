@@ -34,6 +34,32 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
+    public CategoryDTO updateCategory(CategoryDTO categoryDTO) {
+        // Trova la categoria esistente
+        Category existingCategory = categoryRepository.findById(categoryDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        // Aggiorna i campi
+        existingCategory.setName(categoryDTO.getName());
+        existingCategory.setDescription(categoryDTO.getDescription());
+
+        // Gestisce la categoria genitore (se presente)
+        if (categoryDTO.getParentCategoryId() != null) {
+            Category parentCategory = categoryRepository.findById(categoryDTO.getParentCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Parent category not found"));
+            existingCategory.setParentCategory(parentCategory);
+        } else {
+            existingCategory.setParentCategory(null);
+        }
+
+        // Salva i dati aggiornati
+        Category updatedCategory = categoryRepository.save(existingCategory);
+
+        // Converte in DTO e restituisce
+        return CategoryMapper.toDTO(updatedCategory);
+    }
+
+
     public void createSampleData() {
         // Creazione Vocabulary
         Vocabulary legalEntity = new Vocabulary();
