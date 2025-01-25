@@ -31,6 +31,13 @@ public class CategoryController {
         return ResponseEntity.ok(updatedCategory);
     }
 
+    @PostMapping
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
+        CategoryDTO createdCategory = categoryService.createCategory(categoryDTO);
+        return ResponseEntity.ok(createdCategory);
+    }
+
+
     @PostMapping("sampleData")
     public ResponseEntity<?> createSampleData() {
         categoryService.createSampleData();

@@ -59,6 +59,28 @@ public class CategoryService {
         return CategoryMapper.toDTO(updatedCategory);
     }
 
+    public CategoryDTO createCategory(CategoryDTO categoryDTO) {
+        Category newCategory = new Category();
+        newCategory.setName(categoryDTO.getName());
+        newCategory.setDescription(categoryDTO.getDescription());
+
+        newCategory.setVocabulary(vocabularyRepository.findById(categoryDTO.getVocabularyId())
+                .orElseThrow(() -> new RuntimeException("Vocabulary not found")));
+
+        // Gestione della categoria genitore (se specificata)
+        if (categoryDTO.getParentCategoryId() != null) {
+            Category parentCategory = categoryRepository.findById(categoryDTO.getParentCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Parent category not found"));
+            newCategory.setParentCategory(parentCategory);
+        }
+
+        // Salva la nuova categoria
+        Category savedCategory = categoryRepository.save(newCategory);
+
+        // Restituisce il DTO
+        return CategoryMapper.toDTO(savedCategory);
+    }
+
 
     public void createSampleData() {
         // Creazione Vocabulary

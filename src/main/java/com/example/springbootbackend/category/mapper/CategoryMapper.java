@@ -12,8 +12,8 @@ public class CategoryMapper {
                 .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
-/*                .vocabularyId(category.getVocabulary() != null ? category.getVocabulary().getId() : null)
-                .vocabularyName(category.getVocabulary() != null ? category.getVocabulary().getName() : null)*/
+                .vocabularyId(category.getVocabulary() != null ? category.getVocabulary().getId() : null)
+/*                .vocabularyName(category.getVocabulary() != null ? category.getVocabulary().getName() : null)*/
                 .parentCategoryId(category.getParentCategory() != null ? category.getParentCategory().getId() : null)
                 .parentCategoryName(category.getParentCategory() != null ? category.getParentCategory().getName() : null)
 /*                .subCategories(category.getSubCategories().stream()
