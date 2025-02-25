@@ -2,6 +2,7 @@ package com.example.springbootbackend.user.service;
 
 import com.example.springbootbackend.exceptions.MyProjectError;
 import com.example.springbootbackend.exceptions.MyProjectException;
+import com.example.springbootbackend.user.DTO.UserCreateUpdateDTO;
 import com.example.springbootbackend.user.DTO.UserDTO;
 import com.example.springbootbackend.user.enums.Role;
 import com.example.springbootbackend.user.exception.ResourceNotFoundException;
@@ -33,6 +34,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     //test injections
     private static final String[] ROLES = {"USER", "ADMIN"};
@@ -54,7 +56,7 @@ public class UserService {
     }
 
 
-    public User createUser(User user) {
+    public UserCreateUpdateDTO createUser(UserCreateUpdateDTO user) {
         // Controlla se esiste già un utente con la stessa email
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
 
@@ -62,9 +64,10 @@ public class UserService {
             // Crea una risposta di errore personalizzata
             throw new MyProjectException(USER_WITH_THIS_EMAIL_ALREADY_EXISTS);
         }
-        // Se non esiste, procedi con la creazione dell'utente
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+
+        User userToSave = userMapper.toUser(user);
+        userRepository.save(userToSave);
+        return user;
     }
 
     public UserDTO getUserById(Long id) {
@@ -72,7 +75,7 @@ public class UserService {
         return UserMapper.toUserDTO(user);
     }
 
-    public User updateUser(Long id, User userDetails) {
+    public UserCreateUpdateDTO updateUser(Long id, UserCreateUpdateDTO userDetails) {
 
         var user = this.findById(id);
 
@@ -89,7 +92,10 @@ public class UserService {
                 .ifPresent(user::setPassword);
         user.setRole(userDetails.getRole());
 
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        UserCreateUpdateDTO userCreateUpdateDTO = UserMapper.toUserCreateUpdateDTO(user);
+        return userCreateUpdateDTO;
     }
 
     public Map<String, Boolean> deleteUser(Long id) {

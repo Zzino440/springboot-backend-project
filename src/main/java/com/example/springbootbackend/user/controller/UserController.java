@@ -2,6 +2,7 @@ package com.example.springbootbackend.user.controller;
 
 import com.example.springbootbackend.exceptions.MyProjectError;
 import com.example.springbootbackend.exceptions.MyProjectException;
+import com.example.springbootbackend.user.DTO.UserCreateUpdateDTO;
 import com.example.springbootbackend.user.DTO.UserDTO;
 import com.example.springbootbackend.user.mapper.UserMapper;
 import com.example.springbootbackend.user.model.User;
@@ -53,11 +54,10 @@ public class UserController {
      */
     @PostMapping("")
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserCreateUpdateDTO> createUser(@Valid @RequestBody UserCreateUpdateDTO user) {
         try {
-            User createdUser = userService.createUser(user);
-            UserDTO createdUserDTO = UserMapper.toUserDTO(createdUser);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDTO);
+            UserCreateUpdateDTO createdUser = userService.createUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         } catch (MyProjectException e) {
             // Qui catturi la tua eccezione personalizzata e rispondi con il messaggio di errore
             throw new MyProjectException(MyProjectError.USER_CREATION_GENERIC_ERROR);
@@ -67,7 +67,7 @@ public class UserController {
     //get user by id
     @GetMapping("{id}")
     @PreAuthorize("hasAnyAuthority('admin:read', 'user:read')")
-    public ResponseEntity<UserDTO> getUserId(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         UserDTO userDTO = this.userService.getUserById(id);
         return ResponseEntity.ok(userDTO);
     }
@@ -75,10 +75,9 @@ public class UserController {
     //update user
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<UserDTO> updateUser(@Valid @PathVariable Long id, @RequestBody User userDetails) {
-        User updatedUser = userService.updateUser(id, userDetails);
-        UserDTO updateUserDTO = UserMapper.toUserDTO(updatedUser);
-        return ResponseEntity.ok(updateUserDTO);
+    public ResponseEntity<UserCreateUpdateDTO> updateUser(@Valid @PathVariable Long id, @RequestBody UserCreateUpdateDTO userDetails) {
+        UserCreateUpdateDTO updatedUser = userService.updateUser(id, userDetails);
+        return ResponseEntity.ok(updatedUser);
     }
 
     //delete user
