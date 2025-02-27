@@ -54,9 +54,9 @@ public class UserController {
      */
     @PostMapping("")
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<UserCreateUpdateDTO> createUser(@Valid @RequestBody UserCreateUpdateDTO user) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserCreateUpdateDTO user) {
         try {
-            UserCreateUpdateDTO createdUser = userService.createUser(user);
+            UserDTO createdUser = userService.createUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         } catch (MyProjectException e) {
             // Qui catturi la tua eccezione personalizzata e rispondi con il messaggio di errore
@@ -75,8 +75,8 @@ public class UserController {
     //update user
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<UserCreateUpdateDTO> updateUser(@Valid @PathVariable Long id, @RequestBody UserCreateUpdateDTO userDetails) {
-        UserCreateUpdateDTO updatedUser = userService.updateUser(id, userDetails);
+    public ResponseEntity<UserDTO> updateUser(@Valid @PathVariable Long id, @RequestBody UserCreateUpdateDTO userDetails) {
+        UserDTO updatedUser = userService.updateUser(id, userDetails);
         return ResponseEntity.ok(updatedUser);
     }
 

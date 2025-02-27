@@ -56,7 +56,7 @@ public class UserService {
     }
 
 
-    public UserCreateUpdateDTO createUser(UserCreateUpdateDTO user) {
+    public UserDTO createUser(UserCreateUpdateDTO user) {
         // Controlla se esiste già un utente con la stessa email
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
 
@@ -67,7 +67,8 @@ public class UserService {
 
         User userToSave = userMapper.toUser(user);
         userRepository.save(userToSave);
-        return user;
+        UserDTO createdUser = UserMapper.toUserDTO(userToSave);
+        return createdUser;
     }
 
     public UserDTO getUserById(Long id) {
@@ -75,7 +76,7 @@ public class UserService {
         return UserMapper.toUserDTO(user);
     }
 
-    public UserCreateUpdateDTO updateUser(Long id, UserCreateUpdateDTO userDetails) {
+    public UserDTO updateUser(Long id, UserCreateUpdateDTO userDetails) {
 
         var user = this.findById(id);
 
@@ -94,7 +95,7 @@ public class UserService {
 
         userRepository.save(user);
 
-        UserCreateUpdateDTO userCreateUpdateDTO = UserMapper.toUserCreateUpdateDTO(user);
+        UserDTO userCreateUpdateDTO = UserMapper.toUserDTO(user);
         return userCreateUpdateDTO;
     }
 
