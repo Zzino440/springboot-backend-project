@@ -1,37 +1,52 @@
-## AI Task Execution Guidelines
+# CLAUDE.md
 
-### 1. Analysis First Approach
-Focus on DEEP ANALYSIS before proposing solutions. Identify the root cause of problems, not just symptoms.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-### 2. Maintain Focus
-Stay strictly within the context of the presented problem. Don't diverge into related topics or overly complex solutions unless requested.
+## Project
 
-### 3. Clear Explanations Without Unrequested Code
-Explain WHAT is happening and WHY it happens clearly. Don't write code unless explicitly requested.
+Spring Boot 3.2.1 / Java 17 REST backend (Maven), with JWT-based authentication and MySQL persistence. Base package: `com.example.springbootbackend`.
 
-### 4. Graduated Solutions
-Present options in order of preference with clear motivations. Explain why one solution is better than others.
+## Build & run
 
-### 5. Verification and Follow-up
-After a solution is implemented, help verify that the problem is actually resolved.
+```
+./mvnw clean install        # build
+./mvnw spring-boot:run       # run locally (requires a reachable MySQL instance)
+./mvnw test                  # run all tests
+./mvnw test -Dtest=ClassName#methodName   # run a single test
+```
 
-### 6. Direct Language
-Use direct and practical language. Avoid unnecessary technicalities and keep explanations accessible.
+Do not run build/test/lint commands yourself unless the user explicitly asks — the user runs and verifies the application manually.
 
-### 7. Structured Problem-Solving
-- Identify the problem
-- Analyze the causes
-- Propose solutions ordered by effectiveness
-- Explain pros/cons of each
-- Recommend the best one
+Docker: `docker compose up --build` (see `compose.yaml`) starts the app (port 8081→8080) and a MySQL 8.0 container (port 3308→3306). Env vars `DATABASE_HOST`, `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NAME` override `src/main/resources/application.yml` defaults (`localhost:3306/my-project-db`). `spring.jpa.hibernate.ddl-auto` is `update`, so schema changes to `@Entity` classes apply automatically on startup — there are no Flyway/Liquibase migrations in this repo.
 
-### 8. Respect Preferences
-If the user specifies preferences or constraints, respect them rigorously.
+## Architecture
 
-### 9. Plan Tool
-Always use the Plan Tool to create a plan of the things to do and then execute the plan step by step
+The app is organized by **feature package** (`auth`, `user`, `category`, `vocabulary`, `config`, `exceptions`, `demo`), and each feature (except `auth`) follows the same layered sub-structure:
 
-### 10. Never Test Through console
-Never run commands to test the application like run npm, run lint, mvn build, mvn install etc...
+```
+<feature>/controller   REST endpoints
+<feature>/service      business logic, injected repositories
+<feature>/repository   Spring Data JPA interfaces
+<feature>/model        @Entity classes
+<feature>/DTO or dto   request/response DTOs (casing is inconsistent between features)
+<feature>/mapper       stateless entity<->DTO mapping, exposed as static methods (e.g. `CategoryMapper.toDTO(...)`, not injected beans)
+```
 
-# Repository Guidelines
+`auth` is flat (no sub-packages): `AuthenticationController`, `AuthenticationService`, `AuthenticationRequest`, `AuthenticationResponse`, `RegisterRequest`.
+
+### Domain relationships
+
+- `Vocabulary` (e.g. "Legal Entity", "Business Unit") has many `Category` entities.
+- `Category` has an optional self-referential `parentCategory`, allowing category trees within a vocabulary.
+- `User` has a `Role` (`USER`, `ADMIN`), and each `Role` maps to a fixed `Set<Permission>` (`user/enums/Permission.java`, `user/enums/Role.java`). `Role.getAuthorities()` produces both the granular permission authorities and a `ROLE_*` authority.
+
+### Auth & security (`config/`, `auth/`)
+
+- Stateless JWT auth: `JwtAuthenticationFilter` runs before `UsernamePasswordAuthenticationFilter`; `JwtService` issues/validates tokens; `ApplicationConfig` wires `AuthenticationProvider`/`PasswordEncoder`/`AuthenticationManager`.
+- `SecurityConfiguration` disables CSRF, sets `SessionCreationPolicy.STATELESS`, and permits all requests under `/api/v1/auth/**` and `api/v1/demo-controller/**`; everything else requires authentication. Method-level security is enabled (`@EnableMethodSecurity`).
+- `AuthenticationService.register`/`authenticate` return an `AuthenticationResponse` (id + JWT). Login failures use the custom exception below rather than Spring Security's default exceptions.
+
+### Error handling (`exceptions/`)
+
+- Domain errors should be raised as `MyProjectException(MyProjectError, optionalDescription)` — `MyProjectError` is an enum defining an `HttpStatus` and default description per error code; the optional description overrides the default at throw time.
+- `GlobalExceptionHandler` (`@RestControllerAdvice`) maps `MyProjectException`, bean-validation failures (`MethodArgumentNotValidException`, `ConstraintViolationException`), and `ResponseStatusException` to HTTP responses. New domain exceptions should go through `MyProjectError`/`MyProjectException` rather than ad hoc `RuntimeException`s, though `category`'s service layer currently predates this convention and still throws raw `RuntimeException`s for not-found cases.
